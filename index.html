@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="KaarkhanaBot — a public AI work assistant for study, documents, data, coding, research and productivity.">
+  <title>KaarkhanaBot — AI Work Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">क</div>
+        <div><strong>KaarkhanaBot</strong><span>AI Work Assistant</span></div>
+      </div>
+      <button class="new-chat" id="new-chat">＋ New task</button>
+      <nav class="nav" aria-label="Main navigation">
+        <button class="nav-item active" data-view="workspace">⌘ <span>Workspace</span></button>
+        <button class="nav-item" data-view="history">◷ <span>History</span></button>
+        <button class="nav-item" data-view="artifacts">▣ <span>Artifacts</span></button>
+        <button class="nav-item" data-view="tools">⚙ <span>Tools</span></button>
+      </nav>
+      <div class="side-section">
+        <div class="side-label">Recent tasks</div>
+        <div id="recent-list" class="recent-list"></div>
+      </div>
+      <div class="sidebar-bottom">
+        <div class="usage">
+          <div><span>Daily usage</span><b id="usage-count">0 / 20</b></div>
+          <div class="progress"><i id="usage-bar"></i></div>
+        </div>
+        <button class="nav-item" data-view="settings">⚙ <span>Settings</span></button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-btn mobile-only" id="menu-btn" aria-label="Open menu">☰</button>
+        <div class="breadcrumbs" id="breadcrumbs">Workspace</div>
+        <div class="top-actions">
+          <span class="status"><i></i> Checking backend…</span>
+          <button class="icon-btn" id="language-btn" title="Language">EN</button>
+          <button class="avatar">S</button>
+        </div>
+      </header>
+
+      <section id="workspace-view" class="view active-view">
+        <div class="hero">
+          <div class="eyebrow">AI WORK AGENT</div>
+          <h1>What do you want me to <em>accomplish?</em></h1>
+          <p>Describe the goal in your own words. KaarkhanaBot turns it into a plan, uses the right tools, verifies the result, and delivers the work.</p>
+        </div>
+
+        <div class="composer-wrap">
+          <div class="composer" id="composer">
+            <textarea id="prompt" rows="3" placeholder="Ask anything or describe a task…&#10;Try: Analyze this PDF and make a 10-slide presentation."></textarea>
+            <div id="attachment-list" class="attachment-list"></div>
+            <div class="composer-footer">
+              <div class="composer-tools">
+                <label class="tool-chip" for="file-input">📎 <span>Attach</span><input id="file-input" type="file" multiple accept=".pdf,.docx,.pptx,.xlsx,.csv,.txt,.md,.json,.png,.jpg,.jpeg"></label>
+                <button class="tool-chip" id="voice-btn">🎤 <span>Voice</span></button>
+                <button class="tool-chip" id="tools-btn">⚙ <span>Tools</span></button>
+              </div>
+              <button class="send-btn" id="send-btn">Run task <span>↗</span></button>
+            </div>
+          </div>
+          <div class="privacy-note">Files are sent only to your configured backend for the requested task. Sarvam API keys stay server-side.</div>
+        </div>
+
+        <div class="suggestions">
+          <button class="suggestion" data-prompt="Analyze this document and make beginner-friendly notes."><b>▤</b><span><strong>Analyze a document</strong><small>Summarize, explain, extract</small></span>→</button>
+          <button class="suggestion" data-prompt="Analyze my data and identify the most important trends and anomalies."><b>◫</b><span><strong>Analyze my data</strong><small>Find trends and insights</small></span>→</button>
+          <button class="suggestion" data-prompt="Debug this code and explain the problem, fix, and test case."><b>&lt;/&gt;</b><span><strong>Debug my code</strong><small>Explain, fix, test</small></span>→</button>
+          <button class="suggestion" data-prompt="Research this topic using reliable sources and produce a structured report."><b>⌕</b><span><strong>Research a topic</strong><small>Sources, findings, uncertainty</small></span>→</button>
+        </div>
+
+        <div id="task-area" class="task-area"></div>
+      </section>
+
+      <section id="history-view" class="view">
+        <div class="page-head"><div><div class="eyebrow">WORKSPACE</div><h2>Task history</h2><p>Your recent goals and completed runs.</p></div><button class="secondary-btn" id="clear-history">Clear history</button></div>
+        <div id="history-list" class="list-card"></div>
+      </section>
+
+      <section id="artifacts-view" class="view">
+        <div class="page-head"><div><div class="eyebrow">OUTPUTS</div><h2>Artifacts</h2><p>Files generated during this session.</p></div></div>
+        <div id="artifact-list" class="artifact-grid"></div>
+      </section>
+
+      <section id="tools-view" class="view">
+        <div class="page-head"><div><div class="eyebrow">TOOLBOX</div><h2>Available tools</h2><p>Modular capabilities the agent can route tasks to.</p></div></div>
+        <div class="tool-grid" id="tool-grid"></div>
+      </section>
+
+      <section id="settings-view" class="view">
+        <div class="page-head"><div><div class="eyebrow">PREFERENCES</div><h2>Settings</h2><p>Safe defaults for this browser session.</p></div></div>
+        <div class="settings-card">
+          <div class="setting-row"><div><b>Language</b><span>English / Hindi / Hinglish UI foundation</span></div><select id="lang-select"><option>English</option><option>Hindi</option><option>Hinglish</option></select></div>
+          <div class="setting-row"><div><b>Conversation memory</b><span>Keep context only in this browser session.</span></div><label class="switch"><input id="memory-toggle" type="checkbox" checked><i></i></label></div>
+          <div class="setting-row"><div><b>Activity detail</b><span>Show concise tool activity, never private chain-of-thought.</span></div><label class="switch"><input type="checkbox" checked disabled><i></i></label></div>
+          <div class="setting-row danger"><div><b>Reset local data</b><span>Deletes local task history, usage and artifacts.</span></div><button class="danger-btn" id="reset-data">Reset</button></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal hidden" id="tools-modal">
+    <div class="modal-card"><button class="modal-close" data-close>×</button><h3>Choose optional tools</h3><p>The agent normally selects tools automatically.</p><div id="modal-tools"></div></div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="app.js" defer></script>
+</body>
+</html>

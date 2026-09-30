@@ -1,0 +1,2 @@
+# GitHub Pages config — disables Jekyll so plain HTML/CSS/JS is served as-is
+plugins: []

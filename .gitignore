@@ -1,0 +1,21 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Env / secrets — NEVER commit your API key
+.env
+*.env
+config.local.js
+
+# Logs
+*.log
+
+backend/.env
+backend/*.db
+backend/artifacts/*
+!backend/artifacts/.gitkeep
